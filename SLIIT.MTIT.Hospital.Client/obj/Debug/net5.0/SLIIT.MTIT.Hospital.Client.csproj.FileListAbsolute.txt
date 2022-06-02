@@ -37,3 +37,4 @@ C:\Users\Sachintha\Desktop\sliit\Year 4\Modern Topics in IT - IT4020\Microservic
 C:\Users\Sachintha\Desktop\sliit\Year 4\Modern Topics in IT - IT4020\Microservice\SLIIT.MTIT.Hospital.Client\obj\Debug\net5.0\SLIIT.MTIT.Hospital.Client.pdb
 C:\Users\Sachintha\Desktop\sliit\Year 4\Modern Topics in IT - IT4020\Microservice\SLIIT.MTIT.Hospital.Client\obj\Debug\net5.0\SLIIT.MTIT.Hospital.Client.genruntimeconfig.cache
 C:\Users\Sachintha\Desktop\sliit\Year 4\Modern Topics in IT - IT4020\Microservice\SLIIT.MTIT.Hospital.Client\obj\Debug\net5.0\SLIIT.MTIT.Hospital.Client.csproj.CopyComplete
+C:\Users\Sachintha\Desktop\sliit\Year 4\Modern Topics in IT - IT4020\Microservice\SLIIT.MTIT.Hospital.Client\bin\Debug\net5.0\Newtonsoft.Json.dll
