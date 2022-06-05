@@ -30,7 +30,6 @@ namespace SLIIT.MTIT.Hospital.Client.Pages
                 patientList.Add(item.name);
                 patientList.Add(item.sex);
                 patientList.Add(item.bloudtype);
-
             }
 
             ViewData["PatientInfoList"] = patientList;

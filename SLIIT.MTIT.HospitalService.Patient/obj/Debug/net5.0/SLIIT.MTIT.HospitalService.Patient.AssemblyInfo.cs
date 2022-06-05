@@ -11,6 +11,7 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("7c300692-b600-4842-9b4d-d5e7b8437a40")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("SLIIT.MTIT.HospitalService.Patient")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
