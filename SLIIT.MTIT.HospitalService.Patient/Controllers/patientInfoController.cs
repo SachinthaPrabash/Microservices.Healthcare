@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using SLIIT.MTIT.HospitalService.Patient.Database;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace SLIIT.MTIT.HospitalService.Patient.Controllers
         }
 
         // GET api/<ValuesController>/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public patientInfo Get(int id)
         {
             return db.patients.Find(id);
@@ -38,15 +39,21 @@ namespace SLIIT.MTIT.HospitalService.Patient.Controllers
         public IActionResult Post([FromBody] patientInfo model)
         {
             try
-            {
+            { 
+                if(model == null)
+                {
+                    return BadRequest();
+                }
+
                 db.patients.Add(model);
                 db.SaveChanges();
 
-                return StatusCode(201,model);
+                return StatusCode(StatusCodes.Status201Created, model);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return StatusCode(500, ex);
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error creating patient!!");
             }
         }
 
