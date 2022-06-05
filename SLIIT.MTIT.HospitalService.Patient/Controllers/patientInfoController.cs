@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SLIIT.MTIT.HospitalService.Patient.Database;
+using SLIIT.MTIT.HospitalService.Patient.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,41 +15,20 @@ namespace SLIIT.MTIT.HospitalService.Patient.Controllers
     [ApiController]
     public class patientInfoController : ControllerBase
     {
-        DatabaseContext db;
-        public patientInfoController()
+        private readonly IPatient ipatient;
+        
+        public patientInfoController(IPatient ipatient)
         {
-            db = new DatabaseContext();
+            this.ipatient = ipatient;
         }
 
         // GET: api/<ValuesController>
         [HttpGet]
-        public IEnumerable<patientInfo> Get()
-        {
-            return db.patients.ToList();
-        }
-
-        // GET api/<ValuesController>/5
-        [HttpGet("{id:int}")]
-        public patientInfo Get(int id)
-        {
-            return db.patients.Find(id);
-        }
-
-        // POST api/<ValuesController>
-        [HttpPost]
-        public IActionResult Post([FromBody] patientInfo model)
+        public async Task<ActionResult> GetPatients()
         {
             try
-            { 
-                if(model == null)
-                {
-                    return BadRequest();
-                }
-
-                db.patients.Add(model);
-                db.SaveChanges();
-
-                return StatusCode(StatusCodes.Status201Created, model);
+            {
+                return Ok(await ipatient.GetPatients());
             }
             catch (Exception)
             {
@@ -57,36 +37,101 @@ namespace SLIIT.MTIT.HospitalService.Patient.Controllers
             }
         }
 
+        // GET api/<ValuesController>/5
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<patientInfo>> GetPatient(int id)
+        {
+            try
+            {
+                var result = await ipatient.GetPatient(id);
+
+                if(result == null)
+                {
+                    return NotFound();
+                }
+
+                return result;
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error creating patient !!");
+            }
+            
+        }
+
+        // POST api/<ValuesController>
+        [HttpPost]
+        public async Task<ActionResult<patientInfo>> AddPatient([FromBody] patientInfo model)
+        {
+            try
+            { 
+                if(model == null)
+                {
+                    return BadRequest();
+                }
+
+                var createPatient = await ipatient.AddPatient(model);
+
+                return CreatedAtAction(nameof(GetPatient),
+                    new { id = createPatient.id }, createPatient);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error creating new patient!!");
+            }
+        }
+
         // PUT api/<ValuesController>/5
         [HttpPut("{id:int}")]
-        public IActionResult Put(int id, [FromBody] patientInfo model)
+        public async Task<ActionResult<patientInfo>> UpdatePatient(int id, [FromBody] patientInfo model)
         {
             try
             {
                 if (id != model.id)
                     return BadRequest("Employee ID mismatch");
 
-                db.Update(model);
-                db.SaveChanges();
+                var updatePation = await ipatient.GetPatient(id);
 
-                return StatusCode(201, model);
+                if(updatePation == null)
+                {
+                    return NotFound($"Patient with ID = {id} not found");
+                }
+
+                return await ipatient.UpdatePatient(model);
+
+                
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex);
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error updating new patient!!");
             }
         }
 
         // DELETE api/<ValuesController>/5
         [HttpDelete("{id:int}")]
-        public IActionResult Delete(int id)
+        public async Task<ActionResult> DeletePatient(int id)
         {
-            patientInfo prodItem = db.patients.Where(p => p.id == id).FirstOrDefault();
-            //var findpatientDetails = db.patients.Find(id);
-            db.Remove(prodItem);
-            db.SaveChanges();
+            try
+            {
+                var pationDelete = await ipatient.GetPatient(id);
 
-            return StatusCode(201);
+                if(pationDelete == null)
+                {
+                    return NotFound($"Pation with id = {id} not found");
+                }
+
+                await ipatient.DeletePatient(id);
+
+                return Ok($"Pation with id = {id} deleted");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error Deleting new patient!!");
+            }
         }
     }
 }
