@@ -33,7 +33,7 @@ namespace SLIIT.MTIT.HospitalService.Patient.Controllers
             catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Error creating patient!!");
+                    "Error Retriving patient!!");
             }
         }
 
@@ -55,7 +55,7 @@ namespace SLIIT.MTIT.HospitalService.Patient.Controllers
             catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Error creating patient !!");
+                    "Error Retriving patient !!");
             }
             
         }
